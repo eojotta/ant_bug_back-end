@@ -1,0 +1,308 @@
+openapi: 3.0.3
+info:
+  title: Projeto do Integrador - Planeta Verde
+  description: |-
+   API destinada para controle de produtos veganos
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: pyetroferreirasouzza9@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://
+paths:
+  /v1/admin:
+    post:
+      tags:
+        - Admin
+      summary: Adiciona um novo administrador
+      description: Adiciona um novo administrador
+      requestBody:
+        description: JSON contendo os dados do anovo aluno a ser inserido no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid input
+    get:
+      tags:
+        - Admin
+      summary: Lista todos os alunos
+      description: Listagem de todos os alunos registrados no sistema
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'          
+           
+        '404':
+          description: Not Found
+  /v1/admin/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Busca um aluno prlo ID
+      description: Retorna um aluno pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    put:
+      tags:
+        - Admin
+      summary: Update an existing pet
+      description: Update an existing pet by Id
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    delete:
+      tags:
+        - Admin
+      summary: Delete aluno
+      description: Excluir um aluno
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+  /v1/admin/login:
+    post:
+     tags:
+      - Admin
+  /v1/categoria:
+    post: 
+      tags: 
+      - Categoria
+    get:
+      tags:
+        - Categoria
+  /v1/categoria/{id}:
+    get:
+      tags:
+      - Categoria
+    put: 
+      tags:
+      - Categoria
+    delete:
+      tags:
+      - Categoria
+  /v1/produto:
+    post: 
+      tags:
+      - Produto
+    get:
+      tags:
+      - Produto
+  /v1/produto/{id}:
+    get:
+      tags: 
+      - Produto
+    put:
+      tags:
+      - Produto
+    delete: 
+      tags: 
+      - Produto
+
+components:
+  schemas:
+    Admin:
+      required:
+        - nome
+        - email
+        - senha
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        nome: 
+          type: string
+          description: Nome do Administrador
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string 
+          format: email
+          description: Email utilizado para Login
+          minLength: 5
+          maxLength: 256
+        senha: 
+          type: string
+          description: Senha do Administrador
+          minLength: 8
+          maxLength: 256
+
+    Produto:
+      required:
+        - nome
+        - descricao
+        - preco
+        - categoria_id
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        nome:
+          type: string
+          description: Nome do produto
+          minLength: 3
+          maxLength: 100
+        descricao:
+          type: string
+          description: Descrição do produto
+        preco:
+          type: number
+          format: double
+          minimum: 0
+        estoque: 
+          type: integer
+          minimum: 0
+        imagem:
+          type: string
+          format: uri
+          description: Url da imagem do produto
+          maxLength: 255
+        categoria_id:
+          type: integer
+          minimum: 1
+
+    Categoria:
+      required:
+        - nome
+      type: object
+      properties:
+        id: 
+          type: integer
+          minimum: 1
+
+        nome:
+          type: string
+          description: Descrição da categoria
+          minLength: 3
+          maxLength: 255
+
+    Login:
+      required:
+        - email
+        - senha
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        senha: 
+          type: string
+          minLength: 8
+          maxLength: 255
+    AdminGet:
+      required:
+        - id
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome: 
+          type: string
+        email: 
+          type: string
+          format: email
+
+    CategoriaGet:
+      required: 
+        - id
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome: 
+          type: string
+
+    ProdutoGet:
+      required:
+        - id
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome: 
+          type: string
+        descricao: 
+          type: string
+        preco:
+          type: number
+        estoque:
+          type: integer
+        imagem:
+          type: string
+        categoria:
+          $ref: '#/components/schemas/CategoriaGet'
+
+  requestBodies:
+    Admin:
+      description: Objeto que deve ser enviado no Body das requisicoes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Admin'
+    
