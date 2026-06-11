@@ -37,7 +37,7 @@ paths:
       summary: Adiciona um novo administrador
       description: Adiciona um novo administrador
       requestBody:
-        description: JSON contendo os dados do novo Admin a ser inserido no sistema
+        description: JSON contendo os dados do novo administrador a ser inserido no sistema
         content:
           application/json:
             schema:
@@ -66,7 +66,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AdminGet"
-
         "404":
           description: administrador não encontrado
   /v1/admin/{id}:
@@ -111,7 +110,7 @@ paths:
             type: integer
             format: int64
       requestBody:
-        description: Update an existent pet in the store
+        description: Atualiza os dados de um administrador existente
         content:
           application/json:
             schema:
@@ -586,9 +585,6 @@ components:
           format: uri
           description: Url da imagem do produto
           maxLength: 255
-        subcategoria_id:
-          type: integer
-          minimum: 1
 
     Categoria:
       required:
@@ -607,7 +603,7 @@ components:
     Subcategoria:
       required:
         - nome
-        - categoria_id
+        - id_categoria
       type: object
       properties:
         id:
@@ -618,7 +614,7 @@ components:
           description: Nome da subcategoria
           minLength: 3
           maxLength: 100
-        categoria_id:
+        id_categoria:
           type: integer
           minimum: 1
 
@@ -639,14 +635,17 @@ components:
 
     CategoriaProduto:
       required:
-        - categoria_id
-        - produto_id
+        - id_categoria
+        - id_produto
       type: object
       properties:
         id:
           type: integer
           minimum: 1
-        categoria_id:
+        id_categoria:
+          type: integer
+          minimum: 1
+        id_produto:
           type: integer
           minimum: 1
 
