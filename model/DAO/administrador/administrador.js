@@ -54,7 +54,7 @@ const updateAdministrador = async function (administrador) {
 
 const selectAllAdministrador = async function () {
     try {
-        let sql = 'select * from tbl_administrador order by id desc'
+        let sql = 'select nome, email from tbl_administrador order by id desc'
         let result = await knexConection.raw(sql)
         if (Array.isArray(result)) {
             return result[0]
@@ -93,6 +93,17 @@ const deleteAdministrador = async function (id) {
         return false
     }
 }
+
+const selectLogin = async function (login) {
+    try {
+        let sql = `select * from tbl_administrador 
+    where email = ${login}`
+    } catch (error) {
+
+    }
+
+}
+
 
 module.exports = {
     insertAdministrador,
