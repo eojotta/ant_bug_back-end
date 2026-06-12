@@ -10,34 +10,91 @@ const knex = require('knex')
 
 const knexDataBaseConfig = require('../../database_config/knexConfig.js')
 
-const knexConection = knex(knexDatabaseConfig.development)
+const knexConection = knex(knexDataBaseConfig.development)
 
-const insertSubCategoria = async function(subCategoria) {
+const insertSubcategoria = async function (subcategoria) {
     try {
-        let sql = `insert into tbl_subCategoria(
-        
-        )`
+        let sql = `insert into tbl_subcategoria(
+        nome,
+        id_categoria
+    ) values (
+     replace("${subcategoria.nome}),
+     ${subcategoria.id_categoria}
+        );`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
     } catch (error) {
-        
+        return false
     }
 }
 
-const updateSubCategoria = async function(id) {
-
+const updateSubCategoria = async function (subcategoria) {
+    try {
+        let sql = `update tbl_subcategoria set 
+    nome = '${subcategoria.nome}',
+    id_categoria = '${subcategoria.id_categoria}'
+    where id = ${subcategoria.id}`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 }
 
-const selectAllSubCategoria = async function() {
-
+const selectAllSubcategoria = async function () {
+    try {
+        let sql = `select * from tbl_subcategoria order by id desc`
+        let resut = await knexConection.raw(sql)
+        if (Array.isArray(resut)) {
+            return resut[0]
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 }
 
-const selectByIdSubCategoria = async function (){
-
+const selectByIdSubcategoria = async function (id) {
+    try {
+        let sql = `select * from tbl_subcategoria where id = ${id}`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 }
 
-const deleteSubCategoria = async function (){
-
+const deleteSubategoria = async function (id) {
+    try {
+        let sql = `delete from tbl_subcategoria where id = ${id}`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 }
 
 module.exports = {
-
+    insertSubcategoria,
+    updateSubCategoria,
+    selectAllSubcategoria,
+    selectByIdSubcategoria,
+    deleteSubategoria
 }

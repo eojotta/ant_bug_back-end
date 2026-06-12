@@ -24,7 +24,7 @@ const insertProduto = async function (produto) {
         replace("${produto.descricao}", "'", ""),
         replace("${produto.detalhes}"),
         replace("${produto.imagem}")
-        )`
+        );`
         let result = await knexConection.raw(sql)
         if (result) {
             return result[0].insertId

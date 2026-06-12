@@ -21,8 +21,8 @@ const insertAdministrador = async function (administrador) {
         ) values (
         replace("${administrador.nome}", "'", ""),
         replace("${administrador.email}", "'", ""),
-        replace("${administrador.senha}", "'", ""),
-        )`
+        replace("${administrador.senha}", "'", "")
+        );`
 
         let result = await knexConection.raw(sql)
         if (result) {
@@ -38,9 +38,9 @@ const insertAdministrador = async function (administrador) {
 const updateAdministrador = async function (administrador) {
     try {
         let sql = `update tbl_administrador set 
-    nome        =   ${administrador.nome},
-    email       =   ${administrador.email},
-    senha       =   ${administrador.senha}
+    nome        =   '${administrador.nome}',
+    email       =   '${administrador.email}',
+    senha       =   '${administrador.senha}'
     where id = ${administrador.id}`
 
         let result = await knexConection.raw(sql)
@@ -70,8 +70,8 @@ const selectByIdAdministrador = async function (id) {
     try {
         let sql = `select * from tbl_administrador where id = ${id}`
         let result = await knexConection.raw(sql)
-        if (result) {
-            return true
+        if (Array.isArray(result)) {
+            return result[0]
         } else {
             return false
         }
@@ -94,12 +94,18 @@ const deleteAdministrador = async function (id) {
     }
 }
 
-const selectLogin = async function (login) {
+const selectLoginAdministrador = async function (email, senha) {
     try {
         let sql = `select * from tbl_administrador 
-    where email = ${login}`
+    where email = ${email} and where senha = ${senha}`
+        let result = await knexConection.raw(sql)
+        if (Array.isArray(result) && result[0].lenght > 0) {
+            return result[0]
+        } else {
+            return false
+        }
     } catch (error) {
-
+        return false
     }
 
 }
@@ -110,5 +116,6 @@ module.exports = {
     updateAdministrador,
     selectAllAdministrador,
     selectByIdAdministrador,
-    deleteAdministrador
+    deleteAdministrador,
+    selectLoginAdministrador
 }
