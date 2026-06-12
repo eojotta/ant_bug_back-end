@@ -74,7 +74,7 @@ const selectProdutoByIdCategoria = async function (idCategoria) {
                             on tbl_produto.id = tbl_produto_categoria.id_categoria
                     where tbl_cateogia.id = ${idCategoria}`
         let result = await knexConection.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result[0]
         } else {
             return false
@@ -84,7 +84,7 @@ const selectProdutoByIdCategoria = async function (idCategoria) {
     }
 }
 
-const selectCategoriaByIdProduto = async function (idProduto){
+const selectCategoriaByIdProduto = async function (idProduto) {
     try {
         let sql = `select tbl_categoria.* 
                     from tbl_produto
@@ -94,7 +94,7 @@ const selectCategoriaByIdProduto = async function (idProduto){
                             on tbl_produto.id = tbl_produto_categoria.id_categoria
                     where tbl_cateogia.id = ${idCategoria}`
         let result = await knexConection.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result[0]
         } else {
             return false
@@ -102,4 +102,36 @@ const selectCategoriaByIdProduto = async function (idProduto){
     } catch (error) {
         return false
     }
+}
+
+const deleteCategoriaProduto = async function (id) {
+    try {
+        let sql = `delete from tbl_categoria_produto where id = ${id}`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
+const deleteProdutoByIdCategoria = async function (idCategoria) {
+    try {
+        let sql = `delete from tbl_categoria_produto where id_categoria = ${idCategoria};`
+        let result = await knexConection.raw(sql)
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
+module.exports = {
+    
 }

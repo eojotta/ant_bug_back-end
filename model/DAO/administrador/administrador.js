@@ -33,7 +33,7 @@ const insertAdministrador = async function (administrador) {
     } catch (error) {
         return false
     }
-}
+}   
 
 const updateAdministrador = async function (administrador) {
     try {
